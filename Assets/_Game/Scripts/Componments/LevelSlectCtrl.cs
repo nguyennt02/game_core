@@ -23,14 +23,14 @@ public class LevelSlectCtrl : MonoBehaviour
 
     public void Select(int level)
     {
-        levelTxt.SetText(level.ToString());
+        levelTxt.SetText((level+1).ToString());
         blockLevelImg.color = Color.green;
         lineLevelImg.color = Color.yellow;
     }
 
     public void Unchecked(int level)
     {
-        levelTxt.SetText(level.ToString());
+        levelTxt.SetText((level+1).ToString());
         blockLevelImg.color = Color.gray;
         lineLevelImg.color = Color.gray;
     }

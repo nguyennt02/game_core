@@ -93,6 +93,7 @@ MonoBehaviour:
   levelPrefab: {fileID: 7724088714944891101, guid: f6a20750e8b0f754db98e7f3127d1203, type: 3}
   limitSelect: 3
   amountLevel: 10
+  level: 3
 --- !u!1 &1776610152875802597
 GameObject:
   m_ObjectHideFlags: 0

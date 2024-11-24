@@ -9,20 +9,21 @@ public class LevelSelectSystem : MonoBehaviour
     [SerializeField] LevelSlectCtrl levelPrefab;
     [SerializeField] int limitSelect;
     [SerializeField] int amountLevel;
+    public int level;
     void Awake()
     {
-        SetUp(4);
+        SetUp(level);
     }
     void Start()
     {
-        SelectLevel(4);
+        SelectLevel(level);
 
     }
 
     void SelectLevel(int currentLevel)
     {
-        int index = currentLevel - 1;
-        if (currentLevel > limitSelect) index = limitSelect - 1;
+        int index = currentLevel;
+        if (currentLevel > limitSelect) index = limitSelect-1;
         if (TryGetComponent(out RectTransform rect)
             && transform.GetChild(0).TryGetComponent(out RectTransform rect1))
         {
@@ -35,20 +36,17 @@ public class LevelSelectSystem : MonoBehaviour
         int level = 0;
         if (currentLevel > limitSelect)
         {
-            level = currentLevel - limitSelect;
+            level = currentLevel - limitSelect+1;
         }
         for (int i = 0; i < amountLevel; i++)
         {
             var levelObj = Instantiate(levelPrefab, transform);
             levelObj.transform.SetAsFirstSibling();
-            if (level < currentLevel)
-            {
-                levelObj.Select(++level);
-            }
+            if (level <= currentLevel)
+                levelObj.Select(level);
             else
-            {
-                levelObj.Unchecked(++level);
-            }
+                levelObj.Unchecked(level);
+            level++;
         }
     }
 }
