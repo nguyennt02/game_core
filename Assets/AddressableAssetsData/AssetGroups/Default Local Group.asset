@@ -16,42 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 13886495f11b04440bdcccbb1867fcfc
-  m_SerializeEntries:
-  - m_GUID: 508ec4cec23195248987540870d40ff4
-    m_Address: Assets/_Game/Prefabs/Canvas_3.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 67feca966f2621942a27757fa6e8c716
-    m_Address: Assets/_Game/Prefabs/Canvas.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b098507470286e9449c2b30cab42c1df
-    m_Address: Assets/_Game/Prefabs/Canvas_1.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db695c3ef60d96e4cbd07e238485d29f
-    m_Address: Assets/_Game/Art Resources/basketball.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e898aa97cbc30fc4c933865f864c8a60
-    m_Address: Assets/_Game/Prefabs/Canvas_4.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fcaa2bb748da0554ca068be49508feca
-    m_Address: Assets/_Game/Prefabs/Canvas_2.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ffbe2b9fb62ab0542baa832ebc833552
-    m_Address: Assets/_Game/Prefabs/Canvas_5.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8b85e5fdd42ec2b4b86441ab16fe5d04, type: 2}
   m_SchemaSet:
