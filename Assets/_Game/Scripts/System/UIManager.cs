@@ -85,4 +85,9 @@ public class UIManager : MonoBehaviour
             modalUseds.Clear();
         }
     }
+
+    public T GetUI<T>(string name) where T : BaseUIRoot
+    {
+        return modals[name] as T;
+    }
 }

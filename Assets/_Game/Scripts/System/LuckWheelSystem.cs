@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LuckWheelSystem : MonoBehaviour
 {
+    public static LuckWheelSystem Instance { get; private set; }
     [SerializeField] LuckyWheelCtrl itemRewardPrefab;
     [SerializeField] Transform wheel;
     public bool spin = true;
@@ -19,6 +20,10 @@ public class LuckWheelSystem : MonoBehaviour
     public Action<RewardData> onAfterStop;
     public Action<bool> onBeforeSpin;
     public Action<bool> onBeforeStop;
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         SetUpItem();
@@ -31,13 +36,13 @@ public class LuckWheelSystem : MonoBehaviour
         var eulerAngles = startAngles;
         var step = 360 / rewardDatas.Length;
 
-        for (int i = 0; i < rewardDatas.Length;i++)
+        for (int i = 0; i < rewardDatas.Length; i++)
         {
-            var luckyWheelCtrl = Instantiate(itemRewardPrefab,wheel);
+            var luckyWheelCtrl = Instantiate(itemRewardPrefab, wheel);
             luckyWheelCtrl.InjectData(rewardDatas[i]);
             luckyWheelCtrl.SetUp();
             luckyWheelCtrl.NonSelect();
-            luckyWheelCtrl.transform.rotation = Quaternion.AngleAxis(eulerAngles,Vector3.forward);
+            luckyWheelCtrl.transform.rotation = Quaternion.AngleAxis(eulerAngles, Vector3.forward);
             eulerAngles += step;
 
             luckyWheelCtrls[i] = luckyWheelCtrl;
@@ -52,7 +57,7 @@ public class LuckWheelSystem : MonoBehaviour
         var startValue = wheel.transform.eulerAngles.z;
         var endValue = startValue + 360;
         DOTween.To(() => startAngles,
-        value => wheel.transform.rotation = Quaternion.AngleAxis(value,Vector3.forward),
+        value => wheel.transform.rotation = Quaternion.AngleAxis(value, Vector3.forward),
         endValue, duration)
         .SetEase(Ease.Linear)
         .SetLoops(-1, LoopType.Incremental);
@@ -68,17 +73,19 @@ public class LuckWheelSystem : MonoBehaviour
         var startValue = wheel.transform.eulerAngles.z;
         var endValue = 360 - eulerAngles;
         if (startValue > endValue) endValue += 360;
-        endValue += 360*spinAmount;
+        endValue += 360 * spinAmount;
 
         DOTween.KillAll();
         DOTween.To(() => startValue,
-        value => wheel.transform.rotation = Quaternion.AngleAxis(value,Vector3.forward),
-        endValue, duration * endValue/360)
+        value => wheel.transform.rotation = Quaternion.AngleAxis(value, Vector3.forward),
+        endValue, duration * endValue / 360)
         .SetEase(Ease.OutSine)
         .OnComplete(() =>
         {
             luckyWheelCtrls[itemIndex].Select();
             onAfterStop?.Invoke(rewardDatas[itemIndex]);
+            ShowItemSystem.Instance.ShowItemAt(rewardDatas[itemIndex]);
+            UIManager.Instance.ShowModal(KeyString.NAME_POPUP_SHOW_ITEM);
         });
     }
 

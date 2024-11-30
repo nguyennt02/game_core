@@ -7,28 +7,46 @@ using UnityEngine;
 public class BaseUIRoot : MonoBehaviour
 {
     [SerializeField] Transform modal;
+    [SerializeField] bool isAnimation;
+    [SerializeField] float duration;
     public Action onBeforeShowModal;
     public Action onAfterHideModal;
     public BaseUIRoot ShowModal()
     {
-        onBeforeShowModal?.Invoke();
-        onBeforeShowModal = null;
-
-        gameObject.SetActive(true);
-        modal.localScale = Vector3.zero;
-        modal.DOScale(1, 0.3f);
+        if(isAnimation) ShowAnim();
+        else Show();
         return this;
     }
     public BaseUIRoot HideModal()
     {
-        modal.localScale = Vector3.one;
-        modal.DOScale(0, 0.3f).OnComplete(() =>
-        {
-            onAfterHideModal?.Invoke();
-            onAfterHideModal = null;
-            
-            gameObject.SetActive(false);
-        });
+        if(isAnimation) HideAnim();
+        else DOVirtual.DelayedCall(duration,()=> Hide());
         return this;
+    }
+
+    void Show()
+    {
+        onBeforeShowModal?.Invoke();
+        onBeforeShowModal = null;
+        gameObject.SetActive(true);
+    }
+
+    void Hide()
+    {
+        gameObject.SetActive(false);
+        onAfterHideModal?.Invoke();
+        onAfterHideModal = null;
+    }
+
+    void ShowAnim()
+    {
+        Show();
+        modal.localScale = Vector3.zero;
+        modal.DOScale(1, duration);
+    }
+    void HideAnim()
+    {
+        modal.localScale = Vector3.one;
+        modal.DOScale(0, duration).OnComplete(()=> Hide());
     }
 }
