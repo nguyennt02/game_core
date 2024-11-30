@@ -1,21 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LuckWheelSystem : MonoBehaviour
 {
     [SerializeField] Transform wheel;
     [Range(1, 5)]
     [SerializeField] int spinAmount;
+    [Range(1, 5)]
     [SerializeField] float duration;
     [SerializeField] LuckyWheelCtrl[] luckyWheelCtrls;
     float startAngles;
+    int itemIndex = 0;
+    public bool spin = true;
+    public bool stop = true;
+    public Action<LuckyWheelCtrl> onAfterStop;
+    public Action<bool> onBeforeSpin;
+    public Action<bool> onBeforeStop;
     void Start()
     {
         SetUpItem();
-        //Spin();
+        Spin();
     }
     public void SetUpItem()
     {
@@ -34,6 +39,9 @@ public class LuckWheelSystem : MonoBehaviour
 
     public void Spin()
     {
+        onBeforeSpin?.Invoke(spin);
+        if (!spin) return;
+        luckyWheelCtrls[itemIndex].NonSelect();
         var startValue = wheel.transform.eulerAngles.z % 360;
         var endValue = startValue + 360;
         DOTween.To(() => startAngles,
@@ -45,7 +53,9 @@ public class LuckWheelSystem : MonoBehaviour
 
     public void Stop()
     {
-        var itemIndex = RandomIndexItem();
+        onBeforeStop?.Invoke(stop);
+        if (!stop) return;
+        itemIndex = RandomIndexItem();
         var step = 360 / luckyWheelCtrls.Length;
         var eulerAngles = itemIndex * step;
         var endValue = 360 * spinAmount + (startAngles - eulerAngles) % 360;
@@ -55,18 +65,20 @@ public class LuckWheelSystem : MonoBehaviour
         value => wheel.transform.eulerAngles = new Vector3(0, 0, value),
         endValue, endValue / 360)
         .SetEase(Ease.OutSine)
-        .OnComplete(()=> Debug.Log(luckyWheelCtrls[itemIndex].amount));
+        .OnComplete(() =>
+        {
+            luckyWheelCtrls[itemIndex].Select();
+            onAfterStop?.Invoke(luckyWheelCtrls[itemIndex]);
+        });
     }
-
 
     int RandomIndexItem()
     {
-        float randomValue = Random.Range(0f, 1f);
-        Debug.Log(randomValue);
+        float randomValue = UnityEngine.Random.Range(0f, 1f);
         float cumulativeProbability = 0;
         for (int i = 0; i < luckyWheelCtrls.Length; i++)
         {
-            cumulativeProbability += luckyWheelCtrls[i].percent;
+            cumulativeProbability += luckyWheelCtrls[i].data.percent;
             if (randomValue <= cumulativeProbability)
                 return i;
         }
