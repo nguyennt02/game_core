@@ -24,7 +24,7 @@ public class LuckWheelSystem : MonoBehaviour
     }
     public void SetUpItem()
     {
-        startAngles = wheel.transform.eulerAngles.z % 360;
+        startAngles = wheel.transform.eulerAngles.z;
         var eulerAngles = startAngles;
         var step = 360 / luckyWheelCtrls.Length;
 
@@ -32,7 +32,7 @@ public class LuckWheelSystem : MonoBehaviour
         {
             luckyWheelCtrl.NonSelect();
             luckyWheelCtrl.SetUp();
-            luckyWheelCtrl.transform.eulerAngles = new Vector3(0, 0, eulerAngles);
+            luckyWheelCtrl.transform.rotation = Quaternion.AngleAxis(eulerAngles,Vector3.forward);
             eulerAngles += step;
         }
     }
@@ -42,10 +42,10 @@ public class LuckWheelSystem : MonoBehaviour
         onBeforeSpin?.Invoke(spin);
         if (!spin) return;
         luckyWheelCtrls[itemIndex].NonSelect();
-        var startValue = wheel.transform.eulerAngles.z % 360;
+        var startValue = wheel.transform.eulerAngles.z;
         var endValue = startValue + 360;
         DOTween.To(() => startAngles,
-        value => wheel.transform.eulerAngles = new Vector3(0, 0, value),
+        value => wheel.transform.rotation = Quaternion.AngleAxis(value,Vector3.forward),
         endValue, duration)
         .SetEase(Ease.Linear)
         .SetLoops(-1, LoopType.Incremental);
@@ -58,12 +58,15 @@ public class LuckWheelSystem : MonoBehaviour
         itemIndex = RandomIndexItem();
         var step = 360 / luckyWheelCtrls.Length;
         var eulerAngles = itemIndex * step;
-        var endValue = 360 * spinAmount + (startAngles - eulerAngles) % 360;
+        var startValue = wheel.transform.eulerAngles.z;
+        var endValue = 360 - eulerAngles;
+        if (startValue > endValue) endValue += 360;
+        endValue += 360*spinAmount;
 
         DOTween.KillAll();
-        DOTween.To(() => wheel.transform.eulerAngles.z % 360,
-        value => wheel.transform.eulerAngles = new Vector3(0, 0, value),
-        endValue, endValue / 360)
+        DOTween.To(() => startValue,
+        value => wheel.transform.rotation = Quaternion.AngleAxis(value,Vector3.forward),
+        endValue, duration * endValue/360)
         .SetEase(Ease.OutSine)
         .OnComplete(() =>
         {
