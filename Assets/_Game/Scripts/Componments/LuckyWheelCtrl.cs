@@ -11,6 +11,10 @@ public class LuckyWheelCtrl : MonoBehaviour
     [Header("Renferent")]
     [SerializeField] Image iconImg;
     [SerializeField] TextMeshProUGUI amountTxt;
+    public void InjectData(RewardData data)
+    {
+        this.data = data;
+    }
 
     public void SetUp()
     {
@@ -26,11 +30,6 @@ public class LuckyWheelCtrl : MonoBehaviour
     public void NonSelect()
     {
         transform.localScale = Vector3.one;
-    }
-
-    public void Spin()
-    {
-
     }
 }
 public enum TypeItem

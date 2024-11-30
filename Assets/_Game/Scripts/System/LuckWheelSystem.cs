@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class LuckWheelSystem : MonoBehaviour
 {
+    [SerializeField] LuckyWheelCtrl itemRewardPrefab;
     [SerializeField] Transform wheel;
+    public bool spin = true;
+    public bool stop = true;
     [Range(1, 5)]
     [SerializeField] int spinAmount;
     [Range(1, 5)]
     [SerializeField] float duration;
-    [SerializeField] LuckyWheelCtrl[] luckyWheelCtrls;
     float startAngles;
     int itemIndex = 0;
-    public bool spin = true;
-    public bool stop = true;
-    public Action<LuckyWheelCtrl> onAfterStop;
+    [SerializeField] RewardData[] rewardDatas;
+    LuckyWheelCtrl[] luckyWheelCtrls;
+    public Action<RewardData> onAfterStop;
     public Action<bool> onBeforeSpin;
     public Action<bool> onBeforeStop;
     void Start()
@@ -24,16 +26,21 @@ public class LuckWheelSystem : MonoBehaviour
     }
     public void SetUpItem()
     {
+        luckyWheelCtrls = new LuckyWheelCtrl[rewardDatas.Length];
         startAngles = wheel.transform.eulerAngles.z;
         var eulerAngles = startAngles;
-        var step = 360 / luckyWheelCtrls.Length;
+        var step = 360 / rewardDatas.Length;
 
-        foreach (var luckyWheelCtrl in luckyWheelCtrls)
+        for (int i = 0; i < rewardDatas.Length;i++)
         {
-            luckyWheelCtrl.NonSelect();
+            var luckyWheelCtrl = Instantiate(itemRewardPrefab,wheel);
+            luckyWheelCtrl.InjectData(rewardDatas[i]);
             luckyWheelCtrl.SetUp();
+            luckyWheelCtrl.NonSelect();
             luckyWheelCtrl.transform.rotation = Quaternion.AngleAxis(eulerAngles,Vector3.forward);
             eulerAngles += step;
+
+            luckyWheelCtrls[i] = luckyWheelCtrl;
         }
     }
 
@@ -71,7 +78,7 @@ public class LuckWheelSystem : MonoBehaviour
         .OnComplete(() =>
         {
             luckyWheelCtrls[itemIndex].Select();
-            onAfterStop?.Invoke(luckyWheelCtrls[itemIndex]);
+            onAfterStop?.Invoke(rewardDatas[itemIndex]);
         });
     }
 
