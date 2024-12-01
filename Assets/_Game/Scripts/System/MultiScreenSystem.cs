@@ -7,6 +7,9 @@ public class MultiScreenSystem : MonoBehaviour
     {
         Init();
     }
+    void OnEnable(){
+        Init();
+    }
     void Init()
     {
         Canvas.ForceUpdateCanvases();

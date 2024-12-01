@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -84,7 +85,7 @@ public class LuckWheelSystem : MonoBehaviour
         {
             luckyWheelCtrls[itemIndex].Select();
             onAfterStop?.Invoke(rewardDatas[itemIndex]);
-            ShowItemSystem.Instance.ShowItemAt(rewardDatas[itemIndex]);
+            ShowItemSystem.Instance.ShowItemsAt(rewardDatas);
             UIManager.Instance.ShowModal(KeyString.NAME_POPUP_SHOW_ITEM);
         });
     }

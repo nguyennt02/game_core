@@ -19,15 +19,17 @@ public class ItemCtrl : MonoBehaviour
         amount.text = "x" + data.amount.ToString();
     }
 
-    public void Show()
+    public Tween Show()
     {
         iconImg.transform.localScale = Vector2.zero;
-        iconImg.transform.DOScale(Vector2.one, duration).SetEase(Ease.OutBounce);
+        return iconImg.transform.DOScale(Vector2.one, duration)
+        .SetEase(Ease.OutBounce);
     }
 
-    public void Hide()
+    public Tween Hide()
     {
         iconImg.transform.localScale = Vector2.one;
-        iconImg.transform.DOScale(Vector2.zero, duration).SetEase(Ease.InBounce);
+        return iconImg.transform.DOScale(Vector2.zero, duration)
+        .SetEase(Ease.InBounce);
     }
 }
