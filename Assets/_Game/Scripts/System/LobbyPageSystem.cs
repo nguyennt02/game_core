@@ -13,6 +13,10 @@ public class LobbyPageSystem : MonoBehaviour
         LobbyPageSelectSystem.OnSelect += SelectAt;
         SelectAt(1);
     }
+    void OnDestroy()
+    {
+        LobbyPageSelectSystem.OnSelect -= SelectAt;
+    }
 
     void SelectAt(int index)
     {
@@ -28,7 +32,7 @@ public class LobbyPageSystem : MonoBehaviour
             else if (i > index)
                 pos.x = pos.x + witdhCamera * (i - index);
             seq.Join(
-                pages[i].transform.DOMove(pos,temp)
+                pages[i].transform.DOMove(pos, temp)
             );
         }
         seq.OnComplete(() => temp = duration);

@@ -14,7 +14,7 @@ public static class SaveToFileSystem
         string path = Path.Combine(Application.persistentDataPath, fileName);
         if (File.Exists(path))
         {
-            Debug.Log("load data sucess");
+            Debug.Log("load data sucess :" + path);
             return File.ReadAllText(path);
         }
         else

@@ -85,7 +85,7 @@ public class LuckWheelSystem : MonoBehaviour
         {
             luckyWheelCtrls[itemIndex].Select();
             onAfterStop?.Invoke(rewardDatas[itemIndex]);
-            ShowItemSystem.Instance.ShowItemsAt(rewardDatas);
+            ShowItemSystem.Instance.ShowItemAt(rewardDatas[itemIndex]);
             UIManager.Instance.ShowModal(KeyString.NAME_POPUP_SHOW_ITEM);
         });
     }

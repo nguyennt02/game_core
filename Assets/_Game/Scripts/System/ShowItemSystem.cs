@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShowItemSystem : MonoBehaviour
 {
     public static ShowItemSystem Instance { get; private set; }
-    [SerializeField] GameObject itemPrefab;
     [SerializeField] Transform listItem;
     [SerializeField] float duration;
     void Awake()
@@ -30,12 +29,27 @@ public class ShowItemSystem : MonoBehaviour
     }
     public void ShowItemAt(RewardData itemData)
     {
-        GameObject item = ObjectPoolingSystem.PoolingObject(listItem, itemPrefab);
+        GameObject item = PoolingObject(listItem);
         ItemCtrl itemCtrl = item.GetComponent<ItemCtrl>();
         itemCtrl.InjectData(itemData);
         itemCtrl.Setup();
         itemCtrl.duration = duration;
         itemCtrl.Show();
+    }
+
+    GameObject PoolingObject(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            if (!child.gameObject.activeInHierarchy)
+            {
+                child.gameObject.SetActive(true);
+                return child.gameObject;
+            }
+        }
+        var item = Instantiate(parent.GetChild(0).gameObject, parent);
+        item.SetActive(true);
+        return item;
     }
 
     RewardData[] CombineItem(RewardData[] itemData)

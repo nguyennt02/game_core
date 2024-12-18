@@ -191,6 +191,7 @@ MonoBehaviour:
   toValue: 100
   formValue: 0
   duration: 0.3
+  isLock: 1
 --- !u!1 &2432240014791792476
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +384,7 @@ MonoBehaviour:
   toValue: 100
   formValue: 0
   duration: 0.3
+  isLock: 0
 --- !u!1 &4121181048874711974
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9622642, g: 0.745795, b: 0.031772893, a: 1}
+  m_Color: {r: 0.9150943, g: 0.85784525, b: 0.22014059, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1105,3 +1107,4 @@ MonoBehaviour:
   toValue: 100
   formValue: 0
   duration: 0.1
+  isLock: 0

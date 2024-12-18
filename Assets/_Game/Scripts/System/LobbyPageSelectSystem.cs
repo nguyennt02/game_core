@@ -16,11 +16,15 @@ public class LobbyPageSelectSystem : MonoBehaviour
     }
     public void SelectAt(int index)
     {
-        OnSelect?.Invoke(index);
         for (int i = 0; i < lobbyPageSelectCtrls.Length; i++)
         {
-            if (i == index)
+            if (lobbyPageSelectCtrls[i].isLock)
+                lobbyPageSelectCtrls[i].Lock();
+            else if (i == index)
+            {
+                OnSelect?.Invoke(i);
                 lobbyPageSelectCtrls[i].Selecting();
+            }
             else
                 lobbyPageSelectCtrls[i].Unchecking();
         }

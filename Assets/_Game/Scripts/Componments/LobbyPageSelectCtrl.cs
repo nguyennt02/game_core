@@ -21,6 +21,12 @@ public class LobbyPageSelectCtrl : MonoBehaviour
     [SerializeField] float formValue;
     [SerializeField] float duration;
 
+    [Space(10)]
+    public bool isLock;
+
+    public enum StateButton { None, Select, Uncheck, Lock }
+    StateButton stateButton = StateButton.None;
+
     void Select()
     {
         // Set giao dien
@@ -35,10 +41,20 @@ public class LobbyPageSelectCtrl : MonoBehaviour
         iconImg.color = Color.green;
     }
 
+    public void Lock()
+    {
+        if (stateButton == StateButton.Lock) return;
+        stateButton = StateButton.Lock;
+        bgrBtnImg.color = Color.gray;
+        iconImg.color = Color.grey;
+    }
+
     public void Selecting()
     {
         if (iconImg.TryGetComponent(out RectTransform rect))
         {
+            if (stateButton == StateButton.Select) return;
+            stateButton = StateButton.Select;
             Select();
             // chay anim
             DOTween.To(
@@ -58,6 +74,8 @@ public class LobbyPageSelectCtrl : MonoBehaviour
     {
         if (iconImg.TryGetComponent(out RectTransform rect))
         {
+            if (stateButton == StateButton.Uncheck) return;
+            stateButton = StateButton.Uncheck;
             Uncheck();
             // chay anim
             DOTween.To(

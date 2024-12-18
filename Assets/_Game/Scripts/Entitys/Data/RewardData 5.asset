@@ -15,4 +15,4 @@ MonoBehaviour:
   typeItem: 0
   icon: {fileID: 21300000, guid: 146be8c3888ea154a915476b455b81ac, type: 3}
   amount: 5
-  percent: 0.2
+  percent: 0.01

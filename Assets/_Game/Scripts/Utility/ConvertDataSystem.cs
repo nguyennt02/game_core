@@ -24,18 +24,27 @@ public static class ConvertDataSystem
     public static T LoadDataFromFile<T>(string fileName)
     {
         string json = SaveToFileSystem.LoadDataFrom(fileName);
-        return JsonUtility.FromJson<T>(json);
+        if (string.IsNullOrEmpty(json))
+            return default(T);
+        else
+            return JsonUtility.FromJson<T>(json);
     }
 
     public static T LoadDataFromPlayerPrefs<T>(string keyName)
     {
         string json = SaveToPlayerPrefsSystem.LoadDataFrom(keyName);
-        return JsonUtility.FromJson<T>(json);
+        if (string.IsNullOrEmpty(json))
+            return default(T);
+        else
+            return JsonUtility.FromJson<T>(json);
     }
 
     public static async Task<T> LoadDataFromRemote<T>(string serverUrl)
     {
         string json = await SaveToRemoteSystem.LoadDataFrom(serverUrl);
-        return JsonUtility.FromJson<T>(json);
+        if (string.IsNullOrEmpty(json))
+            return default(T);
+        else
+            return JsonUtility.FromJson<T>(json);
     }
 }
