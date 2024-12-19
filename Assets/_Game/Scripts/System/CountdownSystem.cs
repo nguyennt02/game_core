@@ -3,31 +3,36 @@ using UnityEngine;
 
 public class CountdownSystem : MonoBehaviour
 {
-    public static CountdownSystem Instance {get; private set;}
+    public static CountdownSystem Instance { get; private set; }
     [SerializeField] int maxTimeInSeconds = 1200;
-    double elapsedtimeSecounds;
-    public double ElapsedtimeSecounds { get; private set; }
+    double _elapsedtimeSecounds;
+    public double ElapsedtimeSecounds { get => _elapsedtimeSecounds;}
     public Action<int> OnEndLoopTimeSpin;
     bool isPause = true;
     DateTime startTime;
-    void Start()
+    void Awake()
     {
         Instance = this;
-        if (PlayerPrefs.HasKey(KeyString.KEY_EXIt_TIME))
+    }
+    public void StartCountdown()
+    {
+        startTime = DateTime.Now;
+        PlayerPrefs.SetString(KeyString.KEY_EXIT_TIME, startTime.ToBinary().ToString());
+        isPause = false;
+    }
+
+    public void PlayCountdown()
+    {
+        isPause = false;
+        if (PlayerPrefs.HasKey(KeyString.KEY_EXIT_TIME))
         {
-            long exitTime = long.Parse(PlayerPrefs.GetString(KeyString.KEY_EXIt_TIME));
+            long exitTime = long.Parse(PlayerPrefs.GetString(KeyString.KEY_EXIT_TIME));
             startTime = DateTime.FromBinary(exitTime);
         }
         else
         {
             startTime = DateTime.Now;
         }
-    }
-    public void StartCountdown()
-    {
-        startTime = DateTime.Now;
-        PlayerPrefs.SetString(KeyString.KEY_EXIt_TIME, startTime.ToBinary().ToString());
-        isPause = false;
     }
 
     public void StopCountdown()
@@ -44,11 +49,11 @@ public class CountdownSystem : MonoBehaviour
     {
         if (isPause) return;
         TimeSpan elapsedtime = DateTime.Now - startTime;
-        elapsedtimeSecounds = elapsedtime.TotalSeconds;
-        if (elapsedtimeSecounds > maxTimeInSeconds)
+        _elapsedtimeSecounds = elapsedtime.TotalSeconds;
+        if (_elapsedtimeSecounds > maxTimeInSeconds)
         {
-            int amountSpin = (int)elapsedtimeSecounds / maxTimeInSeconds;
-            double timeRmaining = (double)elapsedtimeSecounds % maxTimeInSeconds;
+            int amountSpin = (int)_elapsedtimeSecounds / maxTimeInSeconds;
+            double timeRmaining = (double)_elapsedtimeSecounds % maxTimeInSeconds;
             OnEndLoopTimeSpin?.Invoke(amountSpin);
             StartCountdown();
             startTime -= TimeSpan.FromSeconds(timeRmaining);
