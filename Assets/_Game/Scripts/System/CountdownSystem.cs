@@ -49,11 +49,11 @@ public class CountdownSystem : MonoBehaviour
     {
         if (isPause) return;
         TimeSpan elapsedtime = DateTime.Now - startTime;
-        _elapsedtimeSecounds = elapsedtime.TotalSeconds;
-        if (_elapsedtimeSecounds > maxTimeInSeconds)
+        _elapsedtimeSecounds = maxTimeInSeconds - elapsedtime.TotalSeconds;
+        if (elapsedtime.TotalSeconds > maxTimeInSeconds)
         {
-            int amountSpin = (int)_elapsedtimeSecounds / maxTimeInSeconds;
-            double timeRmaining = (double)_elapsedtimeSecounds % maxTimeInSeconds;
+            int amountSpin = (int)elapsedtime.TotalSeconds / maxTimeInSeconds;
+            double timeRmaining = (double)elapsedtime.TotalSeconds % maxTimeInSeconds;
             OnEndLoopTimeSpin?.Invoke(amountSpin);
             StartCountdown();
             startTime -= TimeSpan.FromSeconds(timeRmaining);

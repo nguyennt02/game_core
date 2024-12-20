@@ -7,7 +7,15 @@ public class GameManager : MonoBehaviour
     public Action<int> OnChangeCurrentHeart;
     void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public int maxHeart { get => 5; }
@@ -17,8 +25,8 @@ public class GameManager : MonoBehaviour
         get => PlayerPrefs.GetInt(KeyString.KEY_CURRENT_HEART, maxHeart);
         set
         {
-            if(value > maxHeart) value = maxHeart;
-            if(value < 0) value = 0;
+            if (value > maxHeart) value = maxHeart;
+            if (value < 0) value = 0;
             PlayerPrefs.SetInt(KeyString.KEY_CURRENT_HEART, value);
             OnChangeCurrentHeart?.Invoke(value);
         }
